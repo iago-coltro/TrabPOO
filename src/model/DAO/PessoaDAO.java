@@ -2,10 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package model;
+package model.DAO;
 
 import model.Pessoa;
-import view.Main;
 
 /**
  *
@@ -18,6 +17,8 @@ public class PessoaDAO {
     public PessoaDAO() {
         Pessoa p1 = new Pessoa();
         p1.setNome("iago");
+        p1.setSexo("masculino");
+        p1.setDtNascimento("18/10/2001");
         p1.setLogin("teste");
         p1.setSenha("123");
         p1.setId(1);
@@ -25,6 +26,8 @@ public class PessoaDAO {
 
         Pessoa p2 = new Pessoa();
         p2.setNome("diego");
+        p1.setSexo("masculino");
+        p1.setDtNascimento("06/04/2000");
         p2.setLogin("teste2");
         p2.setSenha("123");
         p2.setId(2);
@@ -58,5 +61,6 @@ public class PessoaDAO {
         }
         return null;
     }
+
 
 }

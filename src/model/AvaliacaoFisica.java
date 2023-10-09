@@ -18,28 +18,35 @@ public class AvaliacaoFisica {
     double cintura;
     double quadril;
 
-    public long getId() {
+    public long getId()
+    {
         return id;
     }
     
     public Pessoa getPessoa() {
+
         return pessoa;
     }
 
     public double getPeso() {
+
         return peso;
     }
 
     public double getAltura() {
+
         return altura;
     }
 
-    public int getIdade() {
-        return idade;
+    public int getIdade(){
+
+    return idade;
+
     }
 
     public double getPescoco() {
-        return pescoco;
+
+    return pescoco;
     }
 
     public double getCintura() {

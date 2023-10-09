@@ -55,6 +55,21 @@ public void setNome(String nome){
 
     public void setId(int id) {
         this.id = id;
-    }  
-    
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setDtNascimento(String dtNascimento) {
+        this.dtNascimento = dtNascimento;
+    }
+
+    public String getDtNascimento() {
+        return dtNascimento;
+    }
 }
