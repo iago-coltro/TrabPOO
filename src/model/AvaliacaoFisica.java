@@ -17,6 +17,12 @@ public class AvaliacaoFisica {
     double pescoco;
     double cintura;
     double quadril;
+    double txAtividade;
+
+    public AvaliacaoFisica(){
+
+        this.pessoa = Util.getUsuarioLogado();
+    }
 
     public long getId()
     {
@@ -88,7 +94,14 @@ public class AvaliacaoFisica {
     public void setQuadril(double quadril) {
         this.quadril = quadril;
     }
-    
-    
+
+    public double getTxAtividade() {
+        return txAtividade;
+    }
+
+    public void setTxAtividade(double txAtividade) {
+        this.txAtividade = txAtividade;
+    }
+
 }
 

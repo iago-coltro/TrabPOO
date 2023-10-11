@@ -26,9 +26,9 @@ public class LoginController {
                     String login = scanner.nextLine();
                     System.out.println("Senha:");
                     String senha = scanner.nextLine();
-                    Pessoa logada = pessoadao.buscaUsuarioLogin(login, senha);
-                    if (logada != null) {
-                        System.out.println("Login realizado com sucesso\n");
+                    Util.setUsuarioLogado(pessoadao.buscaUsuarioLogin(login, senha));
+                    if (Util.getUsuarioLogado() != null) {
+                        System.out.println("\nLogin realizado com sucesso");
                         //Util.setUsuarioLogado(logada);
                         //System.out.println("ID pessoa logada eh: " + pessoa.getId());
 

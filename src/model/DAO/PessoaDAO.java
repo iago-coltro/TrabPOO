@@ -24,14 +24,17 @@ public class PessoaDAO {
         p1.setId(1);
         this.adiciona(p1);
 
+        /*
         Pessoa p2 = new Pessoa();
-        p2.setNome("diego");
-        p1.setSexo("masculino");
+        p2.setNome("maria");
+        p1.setSexo("feminino");
         p1.setDtNascimento("06/04/2000");
         p2.setLogin("teste2");
         p2.setSenha("123");
         p2.setId(2);
-        this.adiciona(p2);    
+        this.adiciona(p2);
+        */
+
     }    
    
     public boolean adiciona(Pessoa p) {
