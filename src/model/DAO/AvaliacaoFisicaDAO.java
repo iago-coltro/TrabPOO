@@ -4,16 +4,66 @@
  */
 package model.DAO;
 
+import model.Alimento;
 import model.AvaliacaoFisica;
+import model.Pessoa;
 
 /**
  *
  * @author iagol
  */
 public class AvaliacaoFisicaDAO {
-    AvaliacaoFisica[] avaliacoes = new AvaliacaoFisica[2];
+    AvaliacaoFisica[] avaliacoes = new AvaliacaoFisica[10];
 
-    public double calculaIMC(double peso, double altura){
+
+    public AvaliacaoFisicaDAO(PessoaDAO pessoadao){
+    AvaliacaoFisica af1 = new AvaliacaoFisica();
+    af1.setPessoa(pessoadao.buscaPorNome("iago"));
+    af1.setPeso(73);
+    af1.setAltura(172);
+    af1.setIdade(22);
+    af1.setPescoco(30);
+    af1.setQuadril(70);
+    af1.setCintura(68);
+    af1.setRotina(3);
+    af1.calcBF();
+    af1.calcIMC();
+    af1.calcTMB();
+    adicionaAvaliacao(af1);
+    }
+
+    public boolean adicionaAvaliacao(AvaliacaoFisica af) {
+        int proxPosicaoLivreAvFisica = this.proxPosicaoLivreAvFisica();
+        if (proxPosicaoLivreAvFisica != -1) {
+            avaliacoes[proxPosicaoLivreAvFisica] = af;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public int proxPosicaoLivreAvFisica() {
+        for (int i = 0; i < avaliacoes.length; i++) {
+            if (avaliacoes[i] == null) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void mostraAvaliacoes(){
+        for (AvaliacaoFisica af : avaliacoes){
+            if(af != null){
+                System.out.println("\n" + af.toString());
+            }
+        }
+
+    }
+
+
+
+/*
+public double calculaIMC(double peso, double altura){
         double imc  = peso/(altura * altura);
         return imc;
     }
@@ -62,4 +112,7 @@ public class AvaliacaoFisicaDAO {
         double mMagra = peso - massaGorda;
         return mMagra;
     }
+*/
+
+
 }

@@ -4,7 +4,7 @@
  */
 package model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  *
@@ -12,15 +12,15 @@ import java.time.LocalDateTime;
  */
 public class Pessoa {
     private static long serial = 0;
-    long id;
-    String nome;
-    String sexo;
-    String dtNascimento;
-    String login;
-    String senha;
-    String tipoUsuario;
-    LocalDateTime dtCriacao;
-    LocalDateTime dtModificacao;    
+    private long id;
+    private String nome;
+    private String sexo;
+    private String dtNascimento;
+    private String login;
+    private String senha;
+    private String tipoUsuario;
+    private LocalDate dtCriacao;
+    private LocalDate dtModificacao;
 
     public Pessoa(){
         this.id = ++Pessoa.serial;

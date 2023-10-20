@@ -4,33 +4,20 @@
  */
 package view;
 
+import model.Alimento;
 import model.AvaliacaoFisica;
+import model.DAO.AlimentoDAO;
 import model.DAO.AvaliacaoFisicaDAO;
 import model.Pessoa;
+import model.Util;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class GUI {
 
     Scanner scanner = new Scanner(System.in);
-
-    public int menu() {
-
-        StringBuilder builder = new StringBuilder("");
-
-        builder.append("\n=====================================\n");
-        builder.append("SEJA BEM VINDO AO GERADOR DE DIETAS");
-        builder.append("\n=====================================");
-        builder.append("\n0 - Avaliacao fisica");
-        builder.append("\n1 - Tipo de dieta");
-        //builder.append("\n2 - Excluir um pessoa");
-        //builder.append("\n9 - Para sair do programa\n");
-        builder.append("\nQual sua opção ? R: ");
-
-        System.out.print(builder.toString());
-
-        return Integer.parseInt(scanner.nextLine());
-    }
+    Util util = new Util();
 
     public int menuLogar() {
 
@@ -47,6 +34,69 @@ public class GUI {
         return Integer.parseInt(scanner.nextLine());
     }
 
+    public int menu() {
+
+        StringBuilder builder = new StringBuilder("");
+
+        builder.append("\n=====================================\n");
+        builder.append("SEJA BEM VINDO AO GERADOR DE DIETAS");
+        builder.append("\n=====================================");
+        builder.append("\n0 - Menu Avaliação fisica");
+        builder.append("\n1 - Menu Alimentos");
+        builder.append("\n2 - Tipo de dieta");
+        //builder.append("\n9 - Para sair do programa\n");
+        builder.append("\nQual sua opção ? R: ");
+
+        System.out.print(builder.toString());
+
+        return Integer.parseInt(scanner.nextLine());
+    }
+
+    public int menuAvaliacaoFisica() {
+
+        StringBuilder builder = new StringBuilder("");
+
+        builder.append("\n===== AVALIAÇÃO FISICA =====\n");
+        builder.append("\n0 - Adicionar Avaliação Fisica");
+        builder.append("\n1 - Mostrar Avaliações Fisicas");
+        //builder.append("\n9 - Para sair do programa\n");
+        builder.append("\nQual sua opção ? R: ");
+
+        System.out.print(builder.toString());
+
+        return Integer.parseInt(scanner.nextLine());
+    }
+
+    public int menuOpcAlimentos() {
+
+        StringBuilder builder = new StringBuilder("");
+
+        builder.append("\n=====================================\n");
+        builder.append("MENU ALIMENTOS");
+        builder.append("\n=====================================");
+        builder.append("\n0 - Mostrar alimentos cadastrados");
+        builder.append("\n1 - Adicionar alimentos");
+        builder.append("\nQual sua opção ? R: ");
+
+        System.out.print(builder.toString());
+
+        return Integer.parseInt(scanner.nextLine());
+    }
+
+    public int menuTpDieta() {
+
+        StringBuilder builder = new StringBuilder("");
+
+        builder.append("\n===== TIPO DE DIETA =====\n");
+        builder.append("\n0 - Mostrar Tipos de Dietas");
+        builder.append("\n1 - Adicionar Tipo de Dieta");
+        //builder.append("\n9 - Para sair do programa\n");
+        builder.append("\nQual sua opção ? R: ");
+
+        System.out.print(builder.toString());
+
+        return Integer.parseInt(scanner.nextLine());
+    }
     public Pessoa criaPessoa() {
         Pessoa p1 = new Pessoa();
         System.out.println("Nome:");
@@ -61,100 +111,51 @@ public class GUI {
         p1.setSenha(scanner.nextLine());
         return p1;
     }
-
-    public void menuAvaliacaoFisica() {
-
-        StringBuilder builder = new StringBuilder("");
-        AvaliacaoFisica novaAvaliacao = new AvaliacaoFisica();
-        AvaliacaoFisicaDAO novaAvaliacaodao = new AvaliacaoFisicaDAO();
-
-            System.out.println("NOVA AVALIAÇÃO FISICA\n");
-            System.out.println("Digite seu peso (Kg): ");
-            novaAvaliacao.setPeso(Double.parseDouble(scanner.nextLine()));
-            System.out.println("Digite sua altura (Cm): ");
-            novaAvaliacao.setAltura(Double.parseDouble(scanner.nextLine()));
-            System.out.println("Digite sua idade: (Anos)");
-            novaAvaliacao.setIdade(Integer.parseInt(scanner.nextLine()));
-            System.out.println("Digite a medida de seu pescoço (Cm): ");
-            novaAvaliacao.setPescoco(Double.parseDouble(scanner.nextLine()));
-            System.out.println("Digite a medida da sua cintura (Cm): ");
-            novaAvaliacao.setCintura(Double.parseDouble(scanner.nextLine()));
-            System.out.println("Digite a medida do seu quadril (Cm): ");
-            novaAvaliacao.setQuadril(Double.parseDouble(scanner.nextLine()));
-            System.out.println("\n*** Insira o seu fator de atividade ***");
-            System.out.println("1.2 - sedentário (pouco ou nenhum exercício)");
-            System.out.println("1.375 - levemente ativo (exercício leve 1 a 3 dias por semana)");
-            System.out.println("1.55 - moderadamente ativo (exercício moderado 6 a 7 dias por semana)");
-            System.out.println("1.725 - muito ativo (exercício intenso todos os dias ou exercício duas vezes ao dia)");
-            System.out.println("1.9 - extra ativo (exercício muito difícil, treinamento ou trabalho físico)");
-            novaAvaliacao.setTxAtividade(Double.parseDouble(scanner.nextLine()));
-
-        boolean comparaSexo = novaAvaliacao.getPessoa().getSexo().equals("masculino");
-
-        if (comparaSexo)
-        {
-            double imc = novaAvaliacaodao.imc(novaAvaliacao.getPeso(), novaAvaliacao.getAltura());
-            System.out.printf("\nIMC: %.2f", imc);
-
-            double tmb = novaAvaliacaodao.tmbHomem(novaAvaliacao.getPeso(), novaAvaliacao.getAltura(), novaAvaliacao.getIdade());
-            System.out.printf("\nTaxa Metabolica Basal: %.2f Kcal", tmb);
-
-            double gastoCal = novaAvaliacaodao.gastoCalDiario(tmb, novaAvaliacao.getTxAtividade());
-            System.out.printf("\nGasto Calorico Diario: %.2f Kcal", gastoCal);
-
-            double bodyFatHomem = novaAvaliacaodao.bfHomem(novaAvaliacao.getCintura(), novaAvaliacao.getPescoco(), novaAvaliacao.getAltura());
-            System.out.printf("\nPercentual de gordura: %.2f%%", bodyFatHomem);
-
-            double qtdMassaGorda = novaAvaliacaodao.massaGorda(novaAvaliacao.getPeso(), bodyFatHomem);
-            System.out.printf("\nMassa Gorda: %.2f Kg", qtdMassaGorda);
-
-            double qtdMassaMagra = novaAvaliacaodao.massaMagra(novaAvaliacao.getPeso(), qtdMassaGorda);
-            System.out.printf("\nMassa Magra: %.2f Kg\n", qtdMassaMagra);
-
-        } else {
-
-            double imc = novaAvaliacaodao.imc(novaAvaliacao.getPeso(), novaAvaliacao.getAltura());
-            System.out.printf("\nIMC: %.2f", imc);
-
-            double tmb = novaAvaliacaodao.tmbMulher(novaAvaliacao.getPeso(), novaAvaliacao.getAltura(), novaAvaliacao.getIdade());
-            System.out.printf("\nTaxa Metabolica Basal: %.2f Kcal", tmb);
-
-            double gastoCal = novaAvaliacaodao.gastoCalDiario(tmb, novaAvaliacao.getTxAtividade());
-            System.out.printf("\nGasto Calorico Diario: %.2f Kcal", gastoCal);
-
-            double bodyFatMulher = novaAvaliacaodao.bfMulher(novaAvaliacao.getCintura(), novaAvaliacao.getQuadril(), novaAvaliacao.getPescoco(), novaAvaliacao.getAltura(), novaAvaliacao.getPeso());
-            System.out.printf("\nPercentual de gordura: %.2f%%", bodyFatMulher);
-
-            double qtdMassaGorda = novaAvaliacaodao.massaGorda(novaAvaliacao.getPeso(), bodyFatMulher);
-            System.out.printf("\nMassa Gorda: %.2f Kg", qtdMassaGorda);
-
-            double qtdMassaMagra = novaAvaliacaodao.massaMagra(novaAvaliacao.getPeso(), bodyFatMulher);
-            System.out.printf("\nMassa Magra: %.2f Kg\n", qtdMassaMagra);
-
-        }
-
-        System.out.print(builder.toString());
+    public Alimento criaAlimento() {
+    Alimento a1 = new Alimento();
+    System.out.println("Nome:");
+    a1.setNome(scanner.nextLine());
+    System.out.println("Carboidratos:");
+    a1.setCarboidrato(Double.parseDouble(scanner.nextLine()));
+    System.out.println("Proteinas:");
+    a1.setProteina(Double.parseDouble(scanner.nextLine()));
+    System.out.println("Gorduras:");
+    a1.setGordura(Double.parseDouble(scanner.nextLine()));
+    System.out.println("Porção(g):");
+    a1.setPorcao(Double.parseDouble(scanner.nextLine()));
+    a1.setDtCriacao(LocalDate.now());
+    a1.setDtModificacao(LocalDate.now());
+    return a1;
     }
 
-    public void loopPrograma() {
-        int opcaoUsuario = 10;
-
-        while (opcaoUsuario != 9) {
-            opcaoUsuario = this.menu();
-            switch (opcaoUsuario) {
-                case 0:
-
-                    System.out.println("\n===== AVALIACAO FISICA =====\n");
-                    this.menuAvaliacaoFisica();
-                    
-                    break;
-
-                default:
-                    System.out.println("escola uma opcao valida");
-                    break;
-            }
-
-        }
+    public AvaliacaoFisica criaAvaliacaoFisica() {
+        AvaliacaoFisica af1 = new AvaliacaoFisica();
+        System.out.println("Insira sua idade: ");
+        af1.setIdade(Integer.parseInt(scanner.nextLine()));;
+        System.out.println("Insira sua altura em cm: ");
+        af1.setAltura(Double.parseDouble(scanner.nextLine()));
+        System.out.println("Insira seu peso em kg: ");
+        af1.setPeso(Double.parseDouble(scanner.nextLine()));
+        System.out.println("Insira sua circunferencia de pesoco em cm: ");
+        af1.setPescoco(Double.parseDouble(scanner.nextLine()));
+        System.out.println("Insira sua circunferencia de quadril em cm: ");
+        af1.setQuadril(Double.parseDouble(scanner.nextLine()));
+        System.out.println("Insira sua circunferencia de cintura em cm: ");
+        af1.setCintura(Double.parseDouble(scanner.nextLine()));
+        System.out.print("""
+                           Escolha um estilo de rotina abaixo
+                           1: sedentario (pouco ou nenhum exercicio)
+                           2: levemente ativo (exercicio leve 1 a 3 dias por semana)
+                           3: moderadamente ativo (exercicio moderado 6 a 7 dias por semana)
+                           4: muito ativo (exercicio intenso todos os dias ou exercicio duas vezes ao dia)
+                           5: extra ativo (exercicio muito dificil, treinamento ou trabalho fisico)
+                           R: """);
+        af1.setRotina(Integer.parseInt(scanner.nextLine()));
+        af1.calcIMC();
+        af1.calcTMB();
+        af1.calcBF();
+        return af1;
     }
+
 
 }
