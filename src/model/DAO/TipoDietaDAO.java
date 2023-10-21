@@ -1,6 +1,7 @@
 package model.DAO;
 
 import model.Alimento;
+import model.Pessoa;
 import model.TipoDieta;
 
 public class TipoDietaDAO {
@@ -27,6 +28,15 @@ public class TipoDietaDAO {
         tp3.setProteina(15);
         tp3.setGordura(70);
         this.adicionaTpDieta(tp3);
+
+        /*
+        TipoDieta tp4 = new TipoDieta();
+        tp4.setNome("Atleta");
+        tp4.setCarboidrato(restante);
+        tp4.setProteina(2*peso);
+        tp4.setGordura(0,8*peso);
+        this.adicionaTpDieta(tp4);
+         */
     }
     public boolean adicionaTpDieta(TipoDieta td) {
         int proxPosicaoLivreTpDieta = this.proxPosicaoLivreTpDieta();
@@ -54,5 +64,22 @@ public class TipoDietaDAO {
             }
         }
 
+    }
+
+    public void mostraNomeTipoDieta(){
+        for (TipoDieta td : tipodieta){
+            if(td != null){
+                System.out.println(td.getNome());
+            }
+        }
+
+    }
+    public TipoDieta buscaPorNome(String nome) {
+        for (TipoDieta tp : tipodieta) {
+            if (tp != null && tp.getNome().equalsIgnoreCase(nome)){
+                return tp;
+            }
+        }
+        return null;
     }
 }

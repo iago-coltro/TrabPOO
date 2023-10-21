@@ -74,6 +74,10 @@ public class AvaliacaoFisica {
         }
     }
 
+    public double getTmb() {
+        return tmb;
+    }
+
     public long getId()
     {
         return id;

@@ -1,5 +1,7 @@
 package model;
 
+import java.time.LocalDate;
+
 public class TipoDieta {
     private static long serial = 0;
     private long id;
@@ -7,6 +9,8 @@ public class TipoDieta {
     private double carboidrato;
     private double proteina;
     private double gordura;
+    private LocalDate dtCriacao;
+    private LocalDate dtModificacao;
 
     public TipoDieta(){
         this.id = ++TipoDieta.serial;
@@ -64,8 +68,8 @@ public class TipoDieta {
     public String toString() {
         return "id=" + id +
                 "\nnome='" + nome + '\'' +
-                "\ncarboidrato=" + carboidrato +
-                "\nproteina=" + proteina +
-                "\ngordura=" + gordura;
+                "\ncarboidrato=" + carboidrato + "%" +
+                "\nproteina=" + proteina + "%" +
+                "\ngordura=" + gordura + "%";
     }
 }

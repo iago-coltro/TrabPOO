@@ -60,6 +60,15 @@ public class AvaliacaoFisicaDAO {
 
     }
 
+    public AvaliacaoFisica minhaAvaliacao(Pessoa p){
+        for (int i = 0; i < avaliacoes.length; i++) {
+            if(avaliacoes[i] != null && avaliacoes[i].getPessoa().getId() == (p.getId())){
+                return avaliacoes[i];
+            }
+        }
+        return null;
+    }
+
 
 
 /*

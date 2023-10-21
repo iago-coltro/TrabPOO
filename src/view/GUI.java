@@ -4,12 +4,11 @@
  */
 package view;
 
-import model.Alimento;
-import model.AvaliacaoFisica;
+import model.*;
 import model.DAO.AlimentoDAO;
 import model.DAO.AvaliacaoFisicaDAO;
-import model.Pessoa;
-import model.Util;
+import model.DAO.PessoaDAO;
+import model.DAO.TipoDietaDAO;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -18,6 +17,10 @@ public class GUI {
 
     Scanner scanner = new Scanner(System.in);
     Util util = new Util();
+    PessoaDAO pessoadao = new PessoaDAO();
+    AvaliacaoFisicaDAO avaliacaofisicadao = new AvaliacaoFisicaDAO(pessoadao);
+    AvaliacaoFisica avaliacaofisica = new AvaliacaoFisica();
+    TipoDietaDAO tipodietadao = new TipoDietaDAO();
 
     public int menuLogar() {
 
@@ -43,7 +46,8 @@ public class GUI {
         builder.append("\n=====================================");
         builder.append("\n0 - Menu Avaliação fisica");
         builder.append("\n1 - Menu Alimentos");
-        builder.append("\n2 - Tipo de dieta");
+        //builder.append("\n2 - Tipo de dieta");
+        builder.append("\n2 - Iniciar Dieta");
         //builder.append("\n9 - Para sair do programa\n");
         builder.append("\nQual sua opção ? R: ");
 
@@ -58,7 +62,8 @@ public class GUI {
 
         builder.append("\n===== AVALIAÇÃO FISICA =====\n");
         builder.append("\n0 - Adicionar Avaliação Fisica");
-        builder.append("\n1 - Mostrar Avaliações Fisicas");
+        builder.append("\n1 - Mostrar Todas Avaliações Fisicas");
+        builder.append("\n2 - Mostrar Minhas Avaliações Fisicas");
         //builder.append("\n9 - Para sair do programa\n");
         builder.append("\nQual sua opção ? R: ");
 
@@ -97,6 +102,24 @@ public class GUI {
 
         return Integer.parseInt(scanner.nextLine());
     }
+    /*
+    public int menuObjetivo() {
+
+        StringBuilder builder = new StringBuilder("");
+
+        builder.append("\n===== QUAL O SEU OBJETIVO ? =====\n");
+        builder.append("\n0 - Ganhar Peso");
+        builder.append("\n1 - Perder Peso");
+        builder.append("\n2 - Manter Peso");
+        //builder.append("\n9 - Para sair do programa\n");
+        builder.append("\nQual sua opção ? R: ");
+
+        System.out.print(builder.toString());
+
+        return Integer.parseInt(scanner.nextLine());
+    }
+     */
+
     public Pessoa criaPessoa() {
         Pessoa p1 = new Pessoa();
         System.out.println("Nome:");
@@ -129,33 +152,65 @@ public class GUI {
     }
 
     public AvaliacaoFisica criaAvaliacaoFisica() {
-        AvaliacaoFisica af1 = new AvaliacaoFisica();
-        System.out.println("Insira sua idade: ");
-        af1.setIdade(Integer.parseInt(scanner.nextLine()));;
-        System.out.println("Insira sua altura em cm: ");
-        af1.setAltura(Double.parseDouble(scanner.nextLine()));
-        System.out.println("Insira seu peso em kg: ");
-        af1.setPeso(Double.parseDouble(scanner.nextLine()));
-        System.out.println("Insira sua circunferencia de pesoco em cm: ");
-        af1.setPescoco(Double.parseDouble(scanner.nextLine()));
-        System.out.println("Insira sua circunferencia de quadril em cm: ");
-        af1.setQuadril(Double.parseDouble(scanner.nextLine()));
-        System.out.println("Insira sua circunferencia de cintura em cm: ");
-        af1.setCintura(Double.parseDouble(scanner.nextLine()));
-        System.out.print("""
-                           Escolha um estilo de rotina abaixo
-                           1: sedentario (pouco ou nenhum exercicio)
-                           2: levemente ativo (exercicio leve 1 a 3 dias por semana)
-                           3: moderadamente ativo (exercicio moderado 6 a 7 dias por semana)
-                           4: muito ativo (exercicio intenso todos os dias ou exercicio duas vezes ao dia)
-                           5: extra ativo (exercicio muito dificil, treinamento ou trabalho fisico)
-                           R: """);
-        af1.setRotina(Integer.parseInt(scanner.nextLine()));
-        af1.calcIMC();
-        af1.calcTMB();
-        af1.calcBF();
-        return af1;
+    AvaliacaoFisica af1 = new AvaliacaoFisica();
+    System.out.println("Insira sua idade: ");
+    af1.setIdade(Integer.parseInt(scanner.nextLine()));;
+    System.out.println("Insira sua altura em cm: ");
+    af1.setAltura(Double.parseDouble(scanner.nextLine()));
+    System.out.println("Insira seu peso em kg: ");
+    af1.setPeso(Double.parseDouble(scanner.nextLine()));
+    System.out.println("Insira sua circunferencia de pesoco em cm: ");
+    af1.setPescoco(Double.parseDouble(scanner.nextLine()));
+    System.out.println("Insira sua circunferencia de quadril em cm: ");
+    af1.setQuadril(Double.parseDouble(scanner.nextLine()));
+    System.out.println("Insira sua circunferencia de cintura em cm: ");
+    af1.setCintura(Double.parseDouble(scanner.nextLine()));
+    System.out.print("""
+                       Escolha um estilo de rotina abaixo
+                       1: sedentario (pouco ou nenhum exercicio)
+                       2: levemente ativo (exercicio leve 1 a 3 dias por semana)
+                       3: moderadamente ativo (exercicio moderado 6 a 7 dias por semana)
+                       4: muito ativo (exercicio intenso todos os dias ou exercicio duas vezes ao dia)
+                       5: extra ativo (exercicio muito dificil, treinamento ou trabalho fisico)
+                       R: """);
+    af1.setRotina(Integer.parseInt(scanner.nextLine()));
+    af1.setPessoa(util.getUsuarioLogado());
+    af1.calcIMC();
+    af1.calcTMB();
+    af1.calcBF();
+    return af1;
     }
 
+    public Dieta criaDieta() {
+    Dieta d1 = new Dieta();
+    d1.setPessoa(util.getUsuarioLogado());
+    System.out.print("""
+                       \nQual o seu objetivo ?
+                       1: Perder Peso
+                       2: Ganhar Peso
+                       3: Manter Peso                      
+                       R: """);
+    d1.setObjetivo(Integer.parseInt(scanner.nextLine()));
+    System.out.println("Quantas refeições você deseja fazer ?");
+    d1.setNroRefeicoes(Integer.parseInt(scanner.nextLine()));
+    d1.setAvaliacaoFisica(avaliacaofisicadao.minhaAvaliacao(d1.getPessoa()));
+    d1.setCalorias();
+    TipoDieta escolhaDieta = null;
+    while (escolhaDieta == null){
+        System.out.println("===== Tipos de dietas cadastradas =====\n");
+        tipodietadao.mostraNomeTipoDieta();
+        System.out.println("\n--Digite o tipo de dieta que deseja--");
+        escolhaDieta = tipodietadao.buscaPorNome(scanner.nextLine());
+        if (escolhaDieta != null){
+            d1.setTipoDieta(escolhaDieta);
+        }else {
+            System.out.println("Escolha uma dieta cadastrada!\n");
+        }
+    };
+    d1.macros(d1.getCalorias(),d1.getTipoDieta());
+    d1.setDtCriacao(LocalDate.now());
+    d1.setDtModificacao(LocalDate.now());
+    return d1;
+    }
 
 }

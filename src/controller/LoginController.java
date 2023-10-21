@@ -1,10 +1,7 @@
 package controller;
 
 import model.*;
-import model.DAO.AlimentoDAO;
-import model.DAO.AvaliacaoFisicaDAO;
-import model.DAO.TipoDietaDAO;
-import model.DAO.PessoaDAO;
+import model.DAO.*;
 import view.GUI;
 
 import java.util.Scanner;
@@ -16,6 +13,8 @@ public class LoginController {
     AlimentoDAO alimentodao = new AlimentoDAO();
     TipoDietaDAO tipodietadao = new TipoDietaDAO();
     AvaliacaoFisicaDAO avaliacaofisicadao = new AvaliacaoFisicaDAO(pessoadao);
+    DietaDAO dietadao = new DietaDAO();
+    Dieta dieta = new Dieta();
     Util util = new Util();
 
     public LoginController() {
@@ -83,6 +82,32 @@ public class LoginController {
             }
         }
     }
+    /*
+    public void menuStartDieta() {
+
+        int opcaoStartDieta = 10;
+
+        while (opcaoStartDieta != 3) {
+            opcaoStartDieta = gui.menuObjetivo();
+            switch (opcaoStartDieta) {
+                case 0:
+                    System.out.println("GANHAR PESO");
+                    break;
+
+                case 1:
+                    System.out.println("PERDER PESO");
+                    break;
+
+                case 2:
+                    System.out.println("MANTER PESO");
+                    break;
+                default:
+                    System.out.println("escola uma opcao valida");
+                    break;
+            }
+        }
+    }
+     */
 
     public void opcAvaliacaoFisica() {
 
@@ -107,6 +132,16 @@ public class LoginController {
                     avaliacaofisicadao.mostraAvaliacoes();
                     break;
 
+                case 2:
+                    AvaliacaoFisica minhaAvaliacao = avaliacaofisicadao.minhaAvaliacao(util.getUsuarioLogado());
+                    if (minhaAvaliacao != null){
+                        System.out.println("\n" + minhaAvaliacao);
+                    }
+                    else {
+                        System.out.println("\nVocê não tem avaliação física cadastrada");
+                    }
+                    break;
+
                 default:
                     System.out.println("escolha uma opcao valida");
                     break;
@@ -127,7 +162,7 @@ public class LoginController {
 
                 case 1:
                     /*
-                     TipoDieta tpDietatemp = gui.();
+                    TipoDieta tpDietatemp = gui.();
                     tipodietadao.mostraTipoDieta(alimentotemp);
                     if (tipodietadao.mostraTipoDieta(alimentotemp);) {
                         System.out.println("Alimento adicionada!");
@@ -162,9 +197,22 @@ public class LoginController {
                 case 1:
                     this.menuAlimentos();
                     break;
-
+                /*
                 case 2:
                     this.menuTpDieta();
+                    break;
+                 */
+
+                case 2:
+                    //gui.criaDieta();
+                    Dieta dietaTemp = gui.criaDieta();
+                    dietadao.criaDieta(dietaTemp);
+                    if (dietadao.criaDieta(dietaTemp)) {
+                        dietadao.mostraDieta();
+                        System.out.println("\nDieta adicionada!");
+                    } else {
+                        System.out.println("\nErro ao adicionar Dieta");
+                    }
                     break;
 
                 default:
