@@ -3,7 +3,7 @@ package model;
 import java.time.LocalDate;
 
 public class Dieta {
-    private static long serial = 0;
+    private static long serial = -1;
     private long id;
     private Pessoa pessoa;
     private AvaliacaoFisica avaliacaoFisica;

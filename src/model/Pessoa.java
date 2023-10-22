@@ -11,7 +11,7 @@ import java.time.LocalDate;
  * @author iagol
  */
 public class Pessoa {
-    private static long serial = 0;
+    private static long serial = -1;
     private long id;
     private String nome;
     private String sexo;
@@ -71,5 +71,12 @@ public void setNome(String nome){
 
     public String getDtNascimento() {
         return dtNascimento;
+    }
+
+    @Override
+    public String toString() {
+        return "\nPessoa{" +
+                "Id: " + id +
+                ", Nome: '" + nome + "'}";
     }
 }

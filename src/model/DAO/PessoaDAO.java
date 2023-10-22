@@ -21,19 +21,16 @@ public class PessoaDAO {
         p1.setDtNascimento("18/10/2001");
         p1.setLogin("teste");
         p1.setSenha("123");
-        p1.setId(1);
         this.adiciona(p1);
 
-        /*
+
         Pessoa p2 = new Pessoa();
-        p2.setNome("maria");
-        p1.setSexo("feminino");
+        p2.setNome("diego");
+        p2.setSexo("masculino");
         p1.setDtNascimento("06/04/2000");
         p2.setLogin("teste2");
         p2.setSenha("123");
-        p2.setId(2);
         this.adiciona(p2);
-        */
 
     }    
    
@@ -72,6 +69,15 @@ public class PessoaDAO {
             }
         }
         return null;
+    }
+    public void mostraPessoa(Pessoa p) {
+        for (int i = 0; i < pessoas.length; i++) {
+            if (pessoas[i] != null) {
+                if (!pessoas[i].getNome().equals(p.getNome())){
+                    System.out.println(pessoas[i].toString());
+                }
+            }
+        }
     }
 
 

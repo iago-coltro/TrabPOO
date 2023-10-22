@@ -1,13 +1,17 @@
 package model.DAO;
 
+import model.AvaliacaoFisica;
+import model.Dieta;
+import model.Pessoa;
 import model.Refeicoes;
 
 import java.time.LocalDate;
 
 public class RefeicoesDAO {
     Refeicoes refeicoes[] = new Refeicoes[6];
-    public RefeicoesDAO(TipoDietaDAO td){
+    public RefeicoesDAO(DietaDAO d){
         Refeicoes rf1 = new Refeicoes();
+        rf1.setD(d.buscaDietaId(1));
         rf1.setNomeRefeicao("Cafe da manha");
         rf1.setCarboidrato(60);
         rf1.setGordura(45);
@@ -15,7 +19,7 @@ public class RefeicoesDAO {
         rf1.setCalorias();
         rf1.setDtCriacao(LocalDate.now());
         rf1.setDtModificacao(LocalDate.now());
-        criaRefeicao(rf1);
+        AdicionaRefeicao(rf1);
 
         Refeicoes rf2 = new Refeicoes();
         rf2.setNomeRefeicao("Almoço");
@@ -25,7 +29,7 @@ public class RefeicoesDAO {
         rf2.setCalorias();
         rf2.setDtCriacao(LocalDate.now());
         rf2.setDtModificacao(LocalDate.now());
-        criaRefeicao(rf2);
+        AdicionaRefeicao(rf2);
 
         Refeicoes rf3 = new Refeicoes();
         rf3.setNomeRefeicao("Lanche da Tarde");
@@ -35,7 +39,7 @@ public class RefeicoesDAO {
         rf3.setCalorias();
         rf3.setDtCriacao(LocalDate.now());
         rf3.setDtModificacao(LocalDate.now());
-        criaRefeicao(rf3);
+        AdicionaRefeicao(rf3);
 
         Refeicoes rf4 = new Refeicoes();
         rf4.setNomeRefeicao("Janta");
@@ -45,7 +49,7 @@ public class RefeicoesDAO {
         rf4.setCalorias();
         rf4.setDtCriacao(LocalDate.now());
         rf4.setDtModificacao(LocalDate.now());
-        criaRefeicao(rf4);
+        AdicionaRefeicao(rf4);
 
     }
     private int proximaRefeicaoLivre() {
@@ -57,7 +61,7 @@ public class RefeicoesDAO {
         return -1;
     }
 
-    public boolean criaRefeicao(Refeicoes rf) {
+    public boolean AdicionaRefeicao(Refeicoes rf) {
         int proximaRefeicaoLivre = proximaRefeicaoLivre();
         if (proximaRefeicaoLivre != -1) {
             refeicoes[proximaRefeicaoLivre] = rf;
@@ -70,9 +74,28 @@ public class RefeicoesDAO {
     public void mostraRefeicao() {
         for (int i = 0; i < refeicoes.length; i++) {
             if (refeicoes[i] != null) {
-                System.out.println(refeicoes[i]);
+                System.out.println(refeicoes[i].toString());
             }
 
         }
+    }
+
+    public Refeicoes minhasRefeicoes(Dieta d){
+        for (int i = 0; i < refeicoes.length; i++) {
+            if(refeicoes[i] != null && refeicoes[i].getD() == (d)){
+                return refeicoes[i];
+            }
+        }
+        return null;
+    }
+
+    public boolean removeRefeicaoID(long id) {
+        for (int i = 0; i < refeicoes.length; i++) {
+            if (refeicoes[i].getId() == id) {
+                refeicoes[i] = null;
+                return true;
+            }
+        }
+        return false;
     }
 }

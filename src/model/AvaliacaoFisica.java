@@ -9,7 +9,7 @@ package model;
  * @author iagol
  */
 public class AvaliacaoFisica {
-    private static long serial = 0;
+    private static long serial = -1;
     private long id;
     private Pessoa pessoa;
     private double peso;

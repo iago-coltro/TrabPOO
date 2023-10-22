@@ -71,12 +71,21 @@ public class AlimentoDAO {
     }
 
     public void mostraAlimentos(){
-        // Exibir informações dos alimentos
         for (Alimento a : alimentos){
             if(a != null){
                 System.out.println("\n" + a.toString());
             }
         }
 
+    }
+
+    public boolean removeAlimentosID(long id) {
+        for (int i = 0; i < alimentos.length; i++) {
+            if (alimentos[i].getId() == id) {
+                alimentos[i] = null;
+                return true;
+            }
+        }
+        return false;
     }
 }

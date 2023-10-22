@@ -5,10 +5,7 @@
 package view;
 
 import model.*;
-import model.DAO.AlimentoDAO;
-import model.DAO.AvaliacaoFisicaDAO;
-import model.DAO.PessoaDAO;
-import model.DAO.TipoDietaDAO;
+import model.DAO.*;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -19,8 +16,9 @@ public class GUI {
     Util util = new Util();
     PessoaDAO pessoadao = new PessoaDAO();
     AvaliacaoFisicaDAO avaliacaofisicadao = new AvaliacaoFisicaDAO(pessoadao);
-    AvaliacaoFisica avaliacaofisica = new AvaliacaoFisica();
     TipoDietaDAO tipodietadao = new TipoDietaDAO();
+    PostDAO postdao = new PostDAO(pessoadao);
+    SeguidorDAO seguidordao = new SeguidorDAO(pessoadao, postdao);
 
     public int menuLogar() {
 
@@ -30,6 +28,7 @@ public class GUI {
         builder.append("\n=====================================");
         builder.append("\n0 - Logar");
         builder.append("\n1 - Cadastrar ");
+        builder.append("\n9 - Sair");
         builder.append("\nQual sua opção ? R: ");
 
         System.out.print(builder.toString());
@@ -42,13 +41,56 @@ public class GUI {
         StringBuilder builder = new StringBuilder("");
 
         builder.append("\n=====================================\n");
-        builder.append("SEJA BEM VINDO AO GERADOR DE DIETAS");
+        builder.append("           MENU PRINCIPAL           ");
         builder.append("\n=====================================");
         builder.append("\n0 - Menu Avaliação fisica");
         builder.append("\n1 - Menu Alimentos");
-        //builder.append("\n2 - Tipo de dieta");
         builder.append("\n2 - Iniciar Dieta");
-        //builder.append("\n9 - Para sair do programa\n");
+        builder.append("\n3 - Meus Posts");
+        builder.append("\n4 - Gerenciar Posts");
+        builder.append("\n5 - Gerenciar seguidores");
+        builder.append("\n9 - Sair");
+        builder.append("\nQual sua opção ? R: ");
+
+        System.out.print(builder.toString());
+
+        return Integer.parseInt(scanner.nextLine());
+    }
+    public void feed(PostDAO posts, SeguidorDAO seguidores) {
+        Pessoa logado = seguidores.buscaSeguidorPessoa(Util.getUsuarioLogado());
+        System.out.println("\n\n====== TIMELINE ======");
+        if (logado != null) {
+
+            posts.mostraTodosPostPessoa(logado);
+
+        } else {
+            System.out.println("\n\n====== SEM POSTS DE SEGUIDORES ======");
+        }
+    }
+
+    public int menuPost() {
+
+        StringBuilder builder = new StringBuilder("");
+
+        builder.append("\n===== POSTS =====\n");
+        builder.append("\n0 - Adicionar Post");
+        builder.append("\n1 - Remover Post");
+        builder.append("\n9 - Sair\n");
+        builder.append("\nQual sua opção ? R: ");
+
+        System.out.print(builder.toString());
+
+        return Integer.parseInt(scanner.nextLine());
+    }
+    public int menuSeguidores() {
+
+        StringBuilder builder = new StringBuilder("");
+
+        builder.append("\n\n===== SEGUIDORES =====\n");
+        builder.append("\n0 - Adicionar seguidor");
+        builder.append("\n1 - Deixar de seguir");
+        builder.append("\n2 - Mostrar seguidores");
+        builder.append("\n9 - Sair\n");
         builder.append("\nQual sua opção ? R: ");
 
         System.out.print(builder.toString());
@@ -64,7 +106,7 @@ public class GUI {
         builder.append("\n0 - Adicionar Avaliação Fisica");
         builder.append("\n1 - Mostrar Todas Avaliações Fisicas");
         builder.append("\n2 - Mostrar Minhas Avaliações Fisicas");
-        //builder.append("\n9 - Para sair do programa\n");
+        builder.append("\n9 - Sair");
         builder.append("\nQual sua opção ? R: ");
 
         System.out.print(builder.toString());
@@ -81,6 +123,8 @@ public class GUI {
         builder.append("\n=====================================");
         builder.append("\n0 - Mostrar alimentos cadastrados");
         builder.append("\n1 - Adicionar alimentos");
+        builder.append("\n2 - Remover alimentos");
+        builder.append("\n9 - Sair");
         builder.append("\nQual sua opção ? R: ");
 
         System.out.print(builder.toString());
@@ -95,7 +139,23 @@ public class GUI {
         builder.append("\n===== TIPO DE DIETA =====\n");
         builder.append("\n0 - Mostrar Tipos de Dietas");
         builder.append("\n1 - Adicionar Tipo de Dieta");
-        //builder.append("\n9 - Para sair do programa\n");
+        builder.append("\n9 - Sair");
+        builder.append("\nQual sua opção ? R: ");
+
+        System.out.print(builder.toString());
+
+        return Integer.parseInt(scanner.nextLine());
+    }
+
+    public int menuRefeicao() {
+
+        StringBuilder builder = new StringBuilder("");
+
+        builder.append("\n===== REFEIÇÕES =====\n");
+        builder.append("\n0 - Mostrar Minhas Refeições");
+        builder.append("\n1 - Adicionar Refeições");
+        builder.append("\n2 - Remover Refeições");
+        builder.append("\n9 - Sair");
         builder.append("\nQual sua opção ? R: ");
 
         System.out.print(builder.toString());
@@ -133,6 +193,23 @@ public class GUI {
         System.out.println("Senha:");
         p1.setSenha(scanner.nextLine());
         return p1;
+    }
+    public Post criaPost() {
+        Post post1 = new Post();
+        post1.setPessoa(util.getUsuarioLogado());
+        System.out.println("Conteúdo do post: ");
+        post1.setConteudo(scanner.nextLine());
+        post1.setDtCriacao(LocalDate.now());
+        post1.setDtModificacao(LocalDate.now());
+        return post1;
+    }
+
+    public Seguidor addSeguidor() {
+        Seguidor s1 = new Seguidor();
+        s1.setPessoa(pessoadao.buscaPorNome(util.getUsuarioLogado().getNome()));
+        System.out.println("\nDigite o nome da pessoa que deseja seguir ?");
+        s1.setSeguidores(pessoadao.buscaPorNome(scanner.nextLine()));
+        return s1;
     }
     public Alimento criaAlimento() {
     Alimento a1 = new Alimento();
@@ -211,6 +288,21 @@ public class GUI {
     d1.setDtCriacao(LocalDate.now());
     d1.setDtModificacao(LocalDate.now());
     return d1;
+    }
+
+    public Refeicoes criaRefeicao(){
+        Refeicoes novaRefeicao = new Refeicoes();
+        System.out.println("Digite o nome da nova refeição: ");
+        novaRefeicao.setNomeRefeicao(scanner.nextLine());
+        System.out.println("Digite a quantidade de Proteina: ");
+        novaRefeicao.setProteina(Double.parseDouble(scanner.nextLine()));
+        System.out.println("Digite a quantidade de Carboidrato: ");
+        novaRefeicao.setCarboidrato(Double.parseDouble(scanner.nextLine()));
+        System.out.println("Digite a quantidade de Gordura: ");
+        novaRefeicao.setGordura(Double.parseDouble(scanner.nextLine()));
+        novaRefeicao.setDtCriacao(LocalDate.now());
+        novaRefeicao.setDtModificacao(LocalDate.now());
+        return novaRefeicao;
     }
 
 }

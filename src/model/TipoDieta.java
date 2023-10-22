@@ -3,7 +3,7 @@ package model;
 import java.time.LocalDate;
 
 public class TipoDieta {
-    private static long serial = 0;
+    private static long serial = -1;
     private long id;
     private String nome;
     private double carboidrato;

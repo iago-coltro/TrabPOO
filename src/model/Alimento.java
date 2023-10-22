@@ -11,7 +11,7 @@ import java.time.LocalDate;
  * @author iagol
  */
 public class Alimento {
-    private static long serial = 0;
+    private static long serial = -1;
     private long id;
     private String nome;
     private double carboidrato;

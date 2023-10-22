@@ -2,10 +2,10 @@ package model.DAO;
 
 import model.Dieta;
 import model.TipoDieta;
+import model.Pessoa;
 
 public class DietaDAO {
     Dieta dietas[] = new Dieta[6];
-
 
     private int proximaDietaLivre() {
         for (int i = 0; i < dietas.length; i++) {
@@ -34,7 +34,6 @@ public class DietaDAO {
 
         }
     }
-
     public Dieta buscaDietaId(long id){
         for (int i = 0; i < dietas.length; i++) {
             if(dietas[i] != null && dietas[i].getId() == id)

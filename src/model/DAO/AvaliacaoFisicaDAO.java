@@ -30,6 +30,20 @@ public class AvaliacaoFisicaDAO {
     af1.calcIMC();
     af1.calcTMB();
     adicionaAvaliacao(af1);
+
+    AvaliacaoFisica af2 = new AvaliacaoFisica();
+    af2.setPessoa(pessoadao.buscaPorNome("diego"));
+    af2.setPeso(68);
+    af2.setAltura(168);
+    af2.setIdade(22);
+    af2.setPescoco(25);
+    af2.setQuadril(68);
+    af2.setCintura(66);
+    af2.setRotina(2);
+    af2.calcBF();
+    af2.calcIMC();
+    af2.calcTMB();
+    adicionaAvaliacao(af2);
     }
 
     public boolean adicionaAvaliacao(AvaliacaoFisica af) {
@@ -62,7 +76,7 @@ public class AvaliacaoFisicaDAO {
 
     public AvaliacaoFisica minhaAvaliacao(Pessoa p){
         for (int i = 0; i < avaliacoes.length; i++) {
-            if(avaliacoes[i] != null && avaliacoes[i].getPessoa().getId() == (p.getId())){
+            if(avaliacoes[i] != null && avaliacoes[i].getPessoa().getNome().equals(p.getNome())){
                 return avaliacoes[i];
             }
         }

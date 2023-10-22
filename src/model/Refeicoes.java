@@ -3,7 +3,7 @@ package model;
 import java.time.LocalDate;
 
 public class Refeicoes {
-    private static long serial = 0;
+    private static long serial = -1;
     private long id;
     private Dieta d;
     private double proteina;
@@ -87,5 +87,18 @@ public class Refeicoes {
 
     public void setDtModificacao(LocalDate dtModificacao) {
         this.dtModificacao = dtModificacao;
+    }
+
+    @Override
+    public String toString() {
+        return "\nID: " + id +
+                "\nNome da Refeicao: " + nomeRefeicao +
+                "\nDieta: " + d +
+                "\nProteina: " + proteina +
+                "\nCarboidrato: " + carboidrato +
+                "\nGordura: " + gordura +
+                "\nCalorias: " + calorias +
+                "\nDtCriacao=" + dtCriacao +
+                "\nDtModificacao=" + dtModificacao;
     }
 }
