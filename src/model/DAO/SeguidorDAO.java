@@ -40,7 +40,7 @@ public class SeguidorDAO {
 
     public Pessoa buscaSeguidorPessoa(Pessoa p) {
         for (int i = 0; i < seguidores.length; i++) {
-            if(seguidores[i] != null && seguidores[i].getPessoa().getId() == p.getId()){
+            if(seguidores[i] != null && seguidores[i].getPessoa().getNome().equals(p.getNome())){
                 return seguidores[i].getSeguidores();
             }
         }

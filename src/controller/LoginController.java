@@ -17,10 +17,11 @@ public class LoginController {
     DietaDAO dietadao = new DietaDAO();
     Dieta dieta = new Dieta();
     Util util = new Util();
-    RefeicoesDAO refeicoesdao = new RefeicoesDAO(dietadao);
+    RefeicoesDAO refeicoesdao = new RefeicoesDAO();
     PostDAO postdao = new PostDAO(pessoadao);
     SeguidorDAO seguidordao = new SeguidorDAO(pessoadao, postdao);
     Seguidor seguidor = new Seguidor();
+    AlimentoRefeicaoDAO alimentorefeicaodao = new AlimentoRefeicaoDAO(refeicoesdao, alimentodao, pessoadao);
 
     public LoginController() {
 
@@ -104,6 +105,7 @@ public class LoginController {
                     seguidordao.adicionaSeguidor(seguidorTemp);
                     System.out.println("\nAgora você segue: ");
                     seguidordao.mostraSeguidoresPessoa(util.getUsuarioLogado());
+                    gui.feed(postdao, seguidordao);
                     break;
 
                 case 1:
@@ -256,6 +258,54 @@ public class LoginController {
         }
     }
 
+    public void opcAlimentoRefeicao() {
+
+        int opcAlimentoRef = 10;
+
+        while (opcAlimentoRef != 9) {
+            opcAlimentoRef = gui.menuAlimentoRefeicao();
+
+            switch (opcAlimentoRef) {
+
+                case 0:
+                    AlimentoRefeicao novoAlimentoRefeicao = new AlimentoRefeicao();
+                    novoAlimentoRefeicao.setPessoa(util.getUsuarioLogado());
+                    System.out.println("\n-- Alimentos Cadastrados: --\n");
+                    alimentodao.mostraNomeAlimentos();
+                    System.out.println("\nDigite o ID do alimento que deseja adicionar: ");
+                    novoAlimentoRefeicao.setAlimento(alimentodao.BuscaAlimentoID(Integer.parseInt(scanner.nextLine())));
+                    System.out.println("\n-- Refeições Cadastradas: --\n");
+                    refeicoesdao.mostraNomeRefeicao();
+                    System.out.println("\nDigite o ID da refeição que deseja adicionar: ");
+                    novoAlimentoRefeicao.setRefeicao(refeicoesdao.buscaPorId(Integer.parseInt(scanner.nextLine())));
+                    novoAlimentoRefeicao.setDtCriacao(LocalDate.now());
+                    novoAlimentoRefeicao.setDtModificacao(LocalDate.now());
+                    alimentorefeicaodao.criaAlimentoRefeicao(novoAlimentoRefeicao);
+                    System.out.println("Alimento Refeição adicionado!");
+                    break;
+
+                case 1:
+                    System.out.println("\n-- Alimentos Refeição cadastrados --\n");
+                    alimentorefeicaodao.mostraAlimentoRefeicao(util.getUsuarioLogado());
+                    System.out.println("Insira o id do Alimento Refeição que irá ser removido: ");
+                    long id = Integer.parseInt(scanner.nextLine());
+                    if (!alimentorefeicaodao.removeAlimentoRefeicao(id)){
+                        System.out.println("Alimento Refeição nao encontrado");
+                    }else {
+                        System.out.println("\nAlimento Refeição removido!\n");
+                        alimentorefeicaodao.mostraAlimentoRefeicao(util.getUsuarioLogado());
+                    }
+                    break;
+
+
+                default:
+                    System.out.println("escolha uma opcao valida");
+                    break;
+            }
+        }
+    }
+
+
     public void menuRefeicao() {
 
         int opcaoRefeicao = 10;
@@ -300,7 +350,7 @@ public class LoginController {
     public void loopPrograma () {
         int opcaoUsuario = 10;
 
-        while (opcaoUsuario != 11) {
+        while (opcaoUsuario != 9) {
             opcaoUsuario = gui.menu();
             switch (opcaoUsuario) {
                 case 0:
@@ -317,7 +367,9 @@ public class LoginController {
                         dietadao.criaDieta(dietaTemp);
                         System.out.println("\nDieta adicionada!");
                         dietadao.mostraDieta();
-                        this.menuRefeicao();
+                        gui.exibeRefeicoesCompleta(alimentorefeicaodao.buscaTodosPorPessoa(util.getUsuarioLogado()));
+                        this.opcAlimentoRefeicao();
+                        //this.menuRefeicao();
                     } else {
                      System.out.println("\n --- Você ainda não tem avaliação fisica cadastrada ---");
                     }

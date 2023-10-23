@@ -114,11 +114,12 @@ public class Dieta {
     @Override
     public String toString() {
         return "\n\nResumo de sua dieta" +
+                "\nID: " + id +
                 "\nTipo de Dieta: " + tipoDieta.getNome() +
-                "\nCalorias Totais: " + calorias +
-                "\nProteinas: " + proteina + "g" +
-                "\nCarboidratos: " + carboidrato + "g"+
-                "\nGorduras: " + gordura + "g"+
+                "\nCalorias Totais: " + String.format("%.2f", this.calorias) +
+                "\nProteinas: " + String.format("%.2f", this.proteina) + "g" +
+                "\nCarboidratos: " + String.format("%.2f", this.carboidrato) + "g"+
+                "\nGorduras: " + String.format("%.2f", this.gordura) + "g"+
                 "\nNº Refeicoes: " + nroRefeicoes +
                 "\ndtCriacao: " + dtCriacao +
                 "\ndtModificacao: " + dtModificacao;

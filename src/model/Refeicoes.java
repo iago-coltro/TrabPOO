@@ -93,7 +93,6 @@ public class Refeicoes {
     public String toString() {
         return "\nID: " + id +
                 "\nNome da Refeicao: " + nomeRefeicao +
-                "\nDieta: " + d +
                 "\nProteina: " + proteina +
                 "\nCarboidrato: " + carboidrato +
                 "\nGordura: " + gordura +

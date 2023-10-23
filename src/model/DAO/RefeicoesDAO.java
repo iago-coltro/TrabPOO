@@ -9,13 +9,12 @@ import java.time.LocalDate;
 
 public class RefeicoesDAO {
     Refeicoes refeicoes[] = new Refeicoes[6];
-    public RefeicoesDAO(DietaDAO d){
+    public RefeicoesDAO(){
         Refeicoes rf1 = new Refeicoes();
-        rf1.setD(d.buscaDietaId(1));
         rf1.setNomeRefeicao("Cafe da manha");
-        rf1.setCarboidrato(60);
-        rf1.setGordura(45);
-        rf1.setProteina(45);
+        rf1.setCarboidrato(56.34);
+        rf1.setGordura(18.78);
+        rf1.setProteina(42.25);
         rf1.setCalorias();
         rf1.setDtCriacao(LocalDate.now());
         rf1.setDtModificacao(LocalDate.now());
@@ -23,9 +22,9 @@ public class RefeicoesDAO {
 
         Refeicoes rf2 = new Refeicoes();
         rf2.setNomeRefeicao("Almoço");
-        rf2.setCarboidrato(60);
-        rf2.setGordura(45);
-        rf2.setProteina(45);
+        rf2.setCarboidrato(56.34);
+        rf2.setGordura(18.78);
+        rf2.setProteina(42.25);
         rf2.setCalorias();
         rf2.setDtCriacao(LocalDate.now());
         rf2.setDtModificacao(LocalDate.now());
@@ -33,9 +32,9 @@ public class RefeicoesDAO {
 
         Refeicoes rf3 = new Refeicoes();
         rf3.setNomeRefeicao("Lanche da Tarde");
-        rf3.setCarboidrato(60);
-        rf3.setGordura(45);
-        rf3.setProteina(45);
+        rf3.setCarboidrato(56.34);
+        rf3.setGordura(18.78);
+        rf3.setProteina(42.25);
         rf3.setCalorias();
         rf3.setDtCriacao(LocalDate.now());
         rf3.setDtModificacao(LocalDate.now());
@@ -43,9 +42,9 @@ public class RefeicoesDAO {
 
         Refeicoes rf4 = new Refeicoes();
         rf4.setNomeRefeicao("Janta");
-        rf4.setCarboidrato(60);
-        rf4.setGordura(45);
-        rf4.setProteina(45);
+        rf4.setCarboidrato(56.34);
+        rf4.setGordura(18.78);
+        rf4.setProteina(42.25);
         rf4.setCalorias();
         rf4.setDtCriacao(LocalDate.now());
         rf4.setDtModificacao(LocalDate.now());
@@ -80,6 +79,14 @@ public class RefeicoesDAO {
         }
     }
 
+    public void mostraNomeRefeicao() {
+        for (int i = 0; i < refeicoes.length; i++) {
+            if (refeicoes[i] != null) {
+                System.out.println("Id: " + refeicoes[i].getId() + " Nome: " + refeicoes[i].getNomeRefeicao());
+            }
+        }
+    }
+
     public Refeicoes minhasRefeicoes(Dieta d){
         for (int i = 0; i < refeicoes.length; i++) {
             if(refeicoes[i] != null && refeicoes[i].getD() == (d)){
@@ -97,5 +104,13 @@ public class RefeicoesDAO {
             }
         }
         return false;
+    }
+
+    public Refeicoes buscaPorId(long id){
+        for (int i = 0; i < refeicoes.length; i++) {
+            if(refeicoes[i] != null && refeicoes[i].getId() == id)
+                return refeicoes[i];
+        }
+        return null;
     }
 }

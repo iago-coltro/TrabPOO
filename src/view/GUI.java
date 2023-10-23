@@ -19,6 +19,8 @@ public class GUI {
     TipoDietaDAO tipodietadao = new TipoDietaDAO();
     PostDAO postdao = new PostDAO(pessoadao);
     SeguidorDAO seguidordao = new SeguidorDAO(pessoadao, postdao);
+    //AlimentoDAO alimentodao = new AlimentoDAO();
+    //RefeicoesDAO refeicaodao = new RefeicoesDAO();
 
     public int menuLogar() {
 
@@ -162,15 +164,40 @@ public class GUI {
 
         return Integer.parseInt(scanner.nextLine());
     }
-    /*
-    public int menuObjetivo() {
+
+    public void exibeRefeicoesCompleta(AlimentoRefeicao[] alimentoRef) {
+        if (alimentoRef.length != 0) {
+            long id = 0;
+
+            for (int i = 0; i < alimentoRef.length; i++) {
+                if (alimentoRef[i] != null) {
+                    if (alimentoRef[i].getRefeicao().getId() == id) {
+                        System.out.println("\n==== REFEIÇÃO ====");
+                        System.out.println("\n" + alimentoRef[i].getRefeicao());
+                        for (int j = 0; j < alimentoRef.length; j++) {
+                            if (alimentoRef[j] != null && alimentoRef[j].getRefeicao().getId() == id) {
+                                System.out.println("\n-- Alimentos:");
+                                System.out.println(alimentoRef[j].getAlimento());
+                            }
+                        }
+                        id++;
+                    }
+                }
+            }
+        } else {
+            System.out.println("Nenhuma refeicao cadastrada");
+        }
+
+    }
+
+    public int menuAlimentoRefeicao() {
 
         StringBuilder builder = new StringBuilder("");
 
-        builder.append("\n===== QUAL O SEU OBJETIVO ? =====\n");
-        builder.append("\n0 - Ganhar Peso");
-        builder.append("\n1 - Perder Peso");
-        builder.append("\n2 - Manter Peso");
+        builder.append("\n===== ALIMENTO REFEIÇÃO =====\n");
+        builder.append("\n0 - Adicionar Alimento Refeição");
+        builder.append("\n1 - Remover Alimento Refeição");
+        builder.append("\n9 - Sair");
         //builder.append("\n9 - Para sair do programa\n");
         builder.append("\nQual sua opção ? R: ");
 
@@ -178,7 +205,6 @@ public class GUI {
 
         return Integer.parseInt(scanner.nextLine());
     }
-     */
 
     public Pessoa criaPessoa() {
         Pessoa p1 = new Pessoa();
@@ -304,5 +330,20 @@ public class GUI {
         novaRefeicao.setDtModificacao(LocalDate.now());
         return novaRefeicao;
     }
+    /*
+    public AlimentoRefeicao criaAlimentoRefeicao(){
+        AlimentoRefeicao novoAlimentoRefeicao = new AlimentoRefeicao();
+        novoAlimentoRefeicao.setPessoa(util.getUsuarioLogado());
+        //alimentodao.mostraNomeAlimentos();
+        System.out.println("\nDigite o ID do alimento que deseja adicionar: ");
+        //novoAlimentoRefeicao.setAlimento(alimentodao.BuscaAlimentoID(Integer.parseInt(scanner.nextLine())));
+        //refeicaodao.mostraNomeRefeicao();
+        System.out.println("\nDigite o ID da refeição que deseja adicionar: ");
+        //novoAlimentoRefeicao.setRefeicao(refeicaodao.buscaPorId(Integer.parseInt(scanner.nextLine())));
+        novoAlimentoRefeicao.setDtCriacao(LocalDate.now());
+        novoAlimentoRefeicao.setDtModificacao(LocalDate.now());
+        return novoAlimentoRefeicao;
+    }
+     */
 
 }
