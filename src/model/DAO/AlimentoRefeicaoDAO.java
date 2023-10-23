@@ -113,7 +113,7 @@ public class AlimentoRefeicaoDAO {
     public void mostraAlimentoRefeicao(Pessoa p) {
         for (int i = 0; i < alimentorefeicao.length; i++) {
             if (alimentorefeicao[i] != null && alimentorefeicao[i].getPessoa().getNome().equals(p.getNome())) {
-                System.out.println("ID: " + alimentorefeicao[i].getId() + " --- Refeição: " + alimentorefeicao[i].getRefeicao().getNomeRefeicao() + " --- Alimentos: " + alimentorefeicao[i].getAlimento().getNome());
+                System.out.println("ID: " + alimentorefeicao[i].getId() + " --- Refeição: " + alimentorefeicao[i].getRefeicao().getNomeRefeicao() + "--- Alimentos: " + alimentorefeicao[i].getAlimento().getNome());
             }
         }
     }
