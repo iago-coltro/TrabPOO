@@ -11,6 +11,7 @@ public class LoginController {
     GUI gui = new GUI();
     Scanner scanner = new Scanner(System.in);
     PessoaDAO pessoadao = new PessoaDAO();
+    MensagemDAO mensagemdao = new MensagemDAO(pessoadao);
     AlimentoDAO alimentodao = new AlimentoDAO();
     TipoDietaDAO tipodietadao = new TipoDietaDAO();
     AvaliacaoFisicaDAO avaliacaofisicadao = new AvaliacaoFisicaDAO(pessoadao);
@@ -131,6 +132,62 @@ public class LoginController {
         }
     }
 
+    public void opcMensagem() {
+
+        int opcaoMensagem = 10;
+
+        while (opcaoMensagem != 9) {
+            opcaoMensagem = gui.menuMensagem();
+            switch (opcaoMensagem){
+                case 0:
+                    System.out.println("Destinatario: ");
+                    String nome = scanner.nextLine();
+                    System.out.println("Mensagem: ");
+                    String conteudo = scanner.nextLine();
+                    if (!util.getUsuarioLogado().getNome().equalsIgnoreCase(nome)) {
+                        Mensagem m = new Mensagem();
+                        m.setpOrigem(util.getUsuarioLogado());
+                        m.setpDestino(pessoadao.buscaPorNome(nome));
+                        m.setConteudo(conteudo);
+                        mensagemdao.criaMensagem(m);
+                    } else {
+                        System.out.println("Nao e possivel enviar mensagem para voce mesmo.");
+                    }
+
+                case 1:
+                    System.out.println("Mensagens enviadas: ");
+                    mensagemdao.mostraMensagemEnviada(util.getUsuarioLogado());
+                    break;
+
+                case 2:
+                    System.out.println("Mensagens recebidas: ");
+                    mensagemdao.mostraMensagemRecebida(util.getUsuarioLogado());
+                    break;
+
+                case 3:
+                    System.out.println("Todas Mensagens enviadas: ");
+                    mensagemdao.mostraTodasMensagens();
+                break;
+
+                case 4:
+                    mensagemdao.mostraMensagemEnviada(util.getUsuarioLogado());
+                    System.out.println("\nInsira o id da mensagem que será removida: ");
+                    long id = Integer.parseInt(scanner.nextLine());
+                    if (!mensagemdao.removeMensagens(id)){
+                        System.out.println("\nMensagem nao encontrada");
+                    }else {
+                        System.out.println("\nMensagem removida!");
+                        mensagemdao.mostraMensagemEnviada(util.getUsuarioLogado());
+                    }
+                    break;
+
+                default:
+                    System.out.println("escola uma opcao valida");
+                    break;
+            }
+        }
+    }
+
     public void menuAlimentos() {
 
         int opcaoAlimentos = 10;
@@ -165,32 +222,6 @@ public class LoginController {
             }
         }
     }
-    /*
-    public void menuStartDieta() {
-
-        int opcaoStartDieta = 10;
-
-        while (opcaoStartDieta != 3) {
-            opcaoStartDieta = gui.menuObjetivo();
-            switch (opcaoStartDieta) {
-                case 0:
-                    System.out.println("GANHAR PESO");
-                    break;
-
-                case 1:
-                    System.out.println("PERDER PESO");
-                    break;
-
-                case 2:
-                    System.out.println("MANTER PESO");
-                    break;
-                default:
-                    System.out.println("escola uma opcao valida");
-                    break;
-            }
-        }
-    }
-     */
 
     public void opcAvaliacaoFisica() {
 
@@ -385,6 +416,9 @@ public class LoginController {
                     break;
                 case 5:
                     this.opcSeguidor();
+                    break;
+                case 6:
+                    this.opcMensagem();
                     break;
 
                 default:

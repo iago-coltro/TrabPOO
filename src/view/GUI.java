@@ -51,6 +51,7 @@ public class GUI {
         builder.append("\n3 - Meus Posts");
         builder.append("\n4 - Gerenciar Posts");
         builder.append("\n5 - Gerenciar seguidores");
+        builder.append("\n6 - Gerenciar mensagens");
         builder.append("\n9 - Sair");
         builder.append("\nQual sua opção ? R: ");
 
@@ -92,6 +93,24 @@ public class GUI {
         builder.append("\n0 - Adicionar seguidor");
         builder.append("\n1 - Deixar de seguir");
         builder.append("\n2 - Mostrar seguidores");
+        builder.append("\n9 - Sair\n");
+        builder.append("\nQual sua opção ? R: ");
+
+        System.out.print(builder.toString());
+
+        return Integer.parseInt(scanner.nextLine());
+    }
+
+    public int menuMensagem() {
+
+        StringBuilder builder = new StringBuilder("");
+
+        builder.append("\n\n===== MENSAGEM =====\n");
+        builder.append("\n0 - Cria mensagem");
+        builder.append("\n1 - Mostra mensagens enviadas");
+        builder.append("\n2 - Mostra mensagens recebidas");
+        builder.append("\n3 - Mostra todas mensagens");
+        builder.append("\n4 - Apaga mensagem");
         builder.append("\n9 - Sair\n");
         builder.append("\nQual sua opção ? R: ");
 
