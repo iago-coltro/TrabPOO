@@ -79,6 +79,43 @@ public class PessoaDAO {
             }
         }
     }
+    //testar para ver se deu ceto
+    public List<Pessoa> buscaTodos() {
+        String sql = "select * from pessoa";
+        try (Connection connection = new ConnectionFactory().getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            List<Pessoa> pessoas = new ArrayList<Pessoa>();
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                // criando o objeto
+                Pessoa elemento = new Pessoa();
+                elemento.setId(rs.getLong("id"));
+                elemento.setNome(rs.getString("nome"));
+                elemento.setSexo(rs.getString("sexo"));
+                elemento.setLogin(rs.getString("login"));
+                elemento.setSenha(rs.getString("senha"));
+
+                java.sql.Date dataNasc = rs.getDate("dataNascimento");
+                LocalDate dataCriacaoDate = dataNasc.toLocalDate();
+                elemento.setNascimento(dataCriacaoDate);
+
+                java.sql.Date currentDate = rs.getDate("dataCriacao");
+                LocalDate dataCriacao = currentDate.toLocalDate();
+                elemento.setDataCriacao(dataCriacao);
+
+                java.sql.Date currentDateMod = rs.getDate("dataAtualizacao");
+                LocalDate dataMod = currentDateMod.toLocalDate();
+                elemento.setDataModificacao(dataMod);
+
+                pessoas.add(elemento);
+            }
+            rs.close();
+            stmt.close();
+            return pessoas;
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 }

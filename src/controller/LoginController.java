@@ -5,6 +5,7 @@ import model.DAO.*;
 import view.GUI;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 public class LoginController {
@@ -23,7 +24,12 @@ public class LoginController {
     SeguidorDAO seguidordao = new SeguidorDAO(pessoadao, postdao);
     Seguidor seguidor = new Seguidor();
     AlimentoRefeicaoDAO alimentorefeicaodao = new AlimentoRefeicaoDAO(refeicoesdao, alimentodao, pessoadao);
+    // irá pegar a lista de pessoas
+    List<Pessoa> usuarios = pessoadao.buscaTodos();
 
+                        for(Pessoa usuario : usuarios) {
+        System.out.println(usuario.toString());
+    }
     public LoginController() {
 
         int opcaoUsuario = 10;
