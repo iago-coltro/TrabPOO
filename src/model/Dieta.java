@@ -8,7 +8,7 @@ public class Dieta {
     private Pessoa pessoa;
     private AvaliacaoFisica avaliacaoFisica;
     private TipoDieta tipoDieta;
-    private int objetivo;
+    private String objetivo;
     private double calorias;
     private int nroRefeicoes;
     private LocalDate dtCriacao;
@@ -57,8 +57,8 @@ public class Dieta {
         return calorias;
     }
 
-    public void setCalorias() {
-        this.calorias = avaliacaoFisica.getTmb() + this.objetivo;
+    public void setCalorias(double calorias) {
+        this.calorias = calorias;
     }
 
     public int getNroRefeicoes() {
@@ -85,23 +85,11 @@ public class Dieta {
         this.dtModificacao = dtModificacao;
     }
 
-    public void setObjetivo(int objetivo) {
-        switch (objetivo){
-            case 1:
-                this.objetivo = -500;
-                break;
-
-            case 2:
-                this.objetivo = 500;
-                break;
-
-            case 3:
-                this.objetivo = 0;
-                break;
-        }
+    public void setObjetivo(String objetivo) {
+        this.objetivo = objetivo;
     }
 
-    public int getObjetivo() {
+    public String getObjetivo() {
         return objetivo;
     }
 

@@ -5,6 +5,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -15,11 +16,14 @@ public class Pessoa {
     private long id;
     private String nome;
     private String sexo;
-    private String dtNascimento;
+    private LocalDate dtNascimento;
     private String login;
     private String senha;
     private String tipoUsuario;
+
     private LocalDate dtCriacao;
+
+
     private LocalDate dtModificacao;
 
     public Pessoa(){
@@ -66,11 +70,32 @@ public void setNome(String nome){
     }
 
     public void setDtNascimento(String dtNascimento) {
-        this.dtNascimento = dtNascimento;
+        DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatoSaida = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate dataNascimento = LocalDate.parse(dtNascimento, formatoEntrada);
+        String dataNascimentoFormatada = dataNascimento.format(formatoSaida);
+
+        this.dtNascimento = LocalDate.parse(dtNascimento);
     }
 
-    public String getDtNascimento() {
+    public LocalDate getDtCriacao() {
+        return dtCriacao;
+    }
+
+    public void setDtCriacao(LocalDate dtCriacao) {
+        this.dtCriacao = dtCriacao;
+    }
+
+    public LocalDate getDtNascimento() {
         return dtNascimento;
+    }
+
+    public LocalDate getDtModificacao() {
+        return dtModificacao;
+    }
+
+    public void setDtModificacao(LocalDate dtModificacao) {
+        this.dtModificacao = dtModificacao;
     }
 
     @Override

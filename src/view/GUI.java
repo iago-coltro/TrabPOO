@@ -10,7 +10,7 @@ import model.DAO.*;
 import java.time.LocalDate;
 import java.util.Scanner;
 
-public class GUI {
+public class GUI{
 
     Scanner scanner = new Scanner(System.in);
     Util util = new Util();

@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author iagol
@@ -24,6 +26,8 @@ public class AvaliacaoFisica {
     private double tmb;
     private double massMagra;
     private double massGorda;
+    private LocalDate dtCriacao;
+    private LocalDate dtModificacao;
 
     public AvaliacaoFisica(){
         this.id = ++AvaliacaoFisica.serial;
@@ -72,6 +76,14 @@ public class AvaliacaoFisica {
         }else{
             this.tmb = this.txAtividade*(655+((9.6*this.peso)+(1.8*this.altura)-(4.7*this.idade)));
         }
+    }
+
+    public double getImc() {
+        return imc;
+    }
+
+    public double getBf() {
+        return bf;
     }
 
     public double getTmb() {
@@ -155,6 +167,42 @@ public class AvaliacaoFisica {
 
     public void setTxAtividade(double txAtividade) {
         this.txAtividade = txAtividade;
+    }
+
+    public static long getSerial() {
+        return serial;
+    }
+
+    public LocalDate getDtCriacao() {
+        return dtCriacao;
+    }
+
+    public static void setSerial(long serial) {
+        AvaliacaoFisica.serial = serial;
+    }
+
+    public void setBf(double bf) {
+        this.bf = bf;
+    }
+
+    public void setImc(double imc) {
+        this.imc = imc;
+    }
+
+    public void setTmb(double tmb) {
+        this.tmb = tmb;
+    }
+
+    public void setDtCriacao(LocalDate dtCriacao) {
+        this.dtCriacao = dtCriacao;
+    }
+
+    public void setDtModificacao(LocalDate dtModificacao) {
+        this.dtModificacao = dtModificacao;
+    }
+
+    public LocalDate getDtModificacao() {
+        return dtModificacao;
     }
 
     @Override

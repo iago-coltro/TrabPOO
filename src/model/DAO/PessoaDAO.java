@@ -4,7 +4,18 @@
  */
 package model.DAO;
 
+import model.ConnectionFactory;
 import model.Pessoa;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  *
@@ -12,10 +23,128 @@ import model.Pessoa;
  */
 public class PessoaDAO {
 
-    Pessoa[] pessoas = new Pessoa[5];
+    //Pessoa[] pessoas = new Pessoa[5];
 
-    public PessoaDAO() {
-        Pessoa p1 = new Pessoa();
+        private PreparedStatement criaConsulta(Connection con, String login, String senha) throws SQLException {
+            String sql = "select * from pessoa where login = ? and senha = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, login);
+            ps.setString(2, senha);
+            return ps;
+        }
+
+
+        public Pessoa buscaLogin(String login, String senha) {
+            try (Connection connection = new ConnectionFactory().getConnection();
+                 PreparedStatement ps = criaConsulta(connection, login, senha);
+                 ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Pessoa elemento = new Pessoa();
+                    elemento.setId(rs.getInt("id_pessoa"));
+                    elemento.setNome(rs.getString("nome"));
+                    elemento.setSexo(rs.getString("sexo"));
+                    elemento.setLogin(rs.getString("login"));
+                    elemento.setSenha(rs.getString("senha"));
+
+                    java.sql.Date currentDateNasc = rs.getDate("dt_nascimento");
+                    LocalDate dataNasc = currentDateNasc.toLocalDate();
+                    elemento.setDtNascimento(String.valueOf(dataNasc));
+
+                    java.sql.Date currentDateCria = rs.getDate("createDate");
+                    LocalDate dataCria = currentDateCria.toLocalDate();
+                    elemento.setDtCriacao(dataCria);
+
+                    java.sql.Date currentDateMod = rs.getDate("modifyDate");
+                    LocalDate dataMod = currentDateMod.toLocalDate();
+                    elemento.setDtModificacao(dataMod);
+
+                    return elemento;
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+            return null;
+        }
+
+        //testar para ver se deu ceto
+        public List<Pessoa> buscaTodos() {
+            String sql = "select * from pessoa";
+            try (Connection connection = new ConnectionFactory().getConnection();
+                 PreparedStatement stmt = connection.prepareStatement(sql)) {
+                List<Pessoa> pessoas = new ArrayList<>();
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    // criando o objeto
+                    Pessoa elemento = new Pessoa();
+                    elemento.setId(rs.getInt("id_pessoa"));
+                    elemento.setNome(rs.getString("nome"));
+                    elemento.setSexo(rs.getString("sexo"));
+                    elemento.setLogin(rs.getString("login"));
+                    elemento.setSenha(rs.getString("senha"));
+
+                    java.sql.Date currentDateNasc = rs.getDate("dt_nascimento");
+                    LocalDate dataNasc = currentDateNasc.toLocalDate();
+                    elemento.setDtNascimento(String.valueOf(dataNasc));
+
+                    java.sql.Date currentDateCria = rs.getDate("createDate");
+                    LocalDate dataCria = currentDateCria.toLocalDate();
+                    elemento.setDtCriacao(dataCria);
+
+                    java.sql.Date currentDateMod = rs.getDate("modifyDate");
+                    LocalDate dataMod = currentDateMod.toLocalDate();
+                    elemento.setDtModificacao(dataMod);
+
+                    pessoas.add(elemento);
+                }
+                rs.close();
+                stmt.close();
+                return pessoas;
+            }catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        private static PreparedStatement createPreparedStatement(Connection con, long id) throws SQLException {
+            String sql = "select * from pessoa where id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, id);
+            return ps;
+        }
+
+        public static Pessoa buscaPorID(long code) {
+            try (Connection connection = new ConnectionFactory().getConnection();
+                 PreparedStatement ps = createPreparedStatement(connection, code);
+                 ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Pessoa elemento = new Pessoa();
+                    elemento.setId(rs.getInt("id_pessoa"));
+                    elemento.setNome(rs.getString("nome"));
+                    elemento.setSexo(rs.getString("sexo"));
+                    elemento.setLogin(rs.getString("login"));
+                    elemento.setSenha(rs.getString("senha"));
+
+                    java.sql.Date dataNasc = rs.getDate("dt_nascimento");
+                    LocalDate dataCriacaoDate = dataNasc.toLocalDate();
+                    elemento.setDtNascimento(String.valueOf(dataCriacaoDate));
+
+                    java.sql.Date currentDate = rs.getDate("createDate");
+                    LocalDate dataCriacao = currentDate.toLocalDate();
+                    elemento.setDtCriacao(dataCriacao);
+
+                    java.sql.Date currentDateMod = rs.getDate("modifyDate");
+                    LocalDate dataMod = currentDateMod.toLocalDate();
+                    elemento.setDtModificacao(dataMod);
+
+                    return elemento;
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            return null;
+        }
+    }
+        /*Pessoa p1 = new Pessoa();
         p1.setNome("iago");
         p1.setSexo("masculino");
         p1.setDtNascimento("18/10/2001");
@@ -79,43 +208,6 @@ public class PessoaDAO {
             }
         }
     }
-    //testar para ver se deu ceto
-    public List<Pessoa> buscaTodos() {
-        String sql = "select * from pessoa";
-        try (Connection connection = new ConnectionFactory().getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
-            List<Pessoa> pessoas = new ArrayList<Pessoa>();
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                // criando o objeto
-                Pessoa elemento = new Pessoa();
-                elemento.setId(rs.getLong("id"));
-                elemento.setNome(rs.getString("nome"));
-                elemento.setSexo(rs.getString("sexo"));
-                elemento.setLogin(rs.getString("login"));
-                elemento.setSenha(rs.getString("senha"));
 
-                java.sql.Date dataNasc = rs.getDate("dataNascimento");
-                LocalDate dataCriacaoDate = dataNasc.toLocalDate();
-                elemento.setNascimento(dataCriacaoDate);
+         */
 
-                java.sql.Date currentDate = rs.getDate("dataCriacao");
-                LocalDate dataCriacao = currentDate.toLocalDate();
-                elemento.setDataCriacao(dataCriacao);
-
-                java.sql.Date currentDateMod = rs.getDate("dataAtualizacao");
-                LocalDate dataMod = currentDateMod.toLocalDate();
-                elemento.setDataModificacao(dataMod);
-
-                pessoas.add(elemento);
-            }
-            rs.close();
-            stmt.close();
-            return pessoas;
-        }catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-}

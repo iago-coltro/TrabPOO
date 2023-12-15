@@ -8,11 +8,11 @@ import java.util.Properties;
 public class ConnectionFactory {
 
     final String user = "root";
-    final String password = "diego1234";
-    final String dbName = "trabalhoPOO_parte2";
+    final String password = "admwindows";
+    final String dbName = "trabalhopoo_parte2";
 
 
-    public Connection getConnection() {
+    public Connection getConnection() throws SQLException{
         try {
 
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -29,6 +29,7 @@ public class ConnectionFactory {
             return DriverManager.getConnection(con, properties);
 
         } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Erro ao conectar no banco de dados.");
             throw new RuntimeException(e);
         }
     }

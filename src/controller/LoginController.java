@@ -4,11 +4,12 @@ import model.*;
 import model.DAO.*;
 import view.GUI;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
-public class LoginController {
+public class LoginController{
     GUI gui = new GUI();
     Scanner scanner = new Scanner(System.in);
     PessoaDAO pessoadao = new PessoaDAO();
@@ -24,14 +25,17 @@ public class LoginController {
     SeguidorDAO seguidordao = new SeguidorDAO(pessoadao, postdao);
     Seguidor seguidor = new Seguidor();
     AlimentoRefeicaoDAO alimentorefeicaodao = new AlimentoRefeicaoDAO(refeicoesdao, alimentodao, pessoadao);
+
     // irá pegar a lista de pessoas
+    public LoginController() {
+    /*
     List<Pessoa> usuarios = pessoadao.buscaTodos();
 
-                        for(Pessoa usuario : usuarios) {
+    for(Pessoa usuario:usuarios) {
         System.out.println(usuario.toString());
     }
-    public LoginController() {
 
+     */
         int opcaoUsuario = 10;
 
         while (opcaoUsuario != 9) {
@@ -43,7 +47,7 @@ public class LoginController {
                     String login = scanner.nextLine();
                     System.out.println("Senha:");
                     String senha = scanner.nextLine();
-                    Util.setUsuarioLogado(pessoadao.buscaUsuarioLogin(login, senha));
+                    Util.setUsuarioLogado(pessoadao.buscaLogin(login, senha));
                     if (Util.getUsuarioLogado() != null) {
                         System.out.println("\nLogin realizado com sucesso");
                         System.out.println("\n\n====== OLÁ " + Util.getUsuarioLogado().getNome().toUpperCase() + " ======");
@@ -56,13 +60,15 @@ public class LoginController {
 
                 case 1:
                     System.out.println("\n===== CADASTRAR =====\n");
-                    Pessoa temp = gui.criaPessoa();
+                    /*Pessoa temp = gui.criaPessoa();
                     if (pessoadao.adiciona(temp)) {
                         System.out.println("Usuario criado!");
                     } else {
                         System.out.println("Erro ao criar usuário");
                     }
                     break;
+
+                     */
             }
         }
         System.out.println("Saindo...");
@@ -245,11 +251,11 @@ public class LoginController {
                     break;
 
                 case 1:
-                    avaliacaofisicadao.mostraAvaliacoes();
+                    avaliacaofisicadao.buscaUltimaAvaliacao();
                     break;
 
                 case 2:
-                    AvaliacaoFisica minhaAvaliacao = avaliacaofisicadao.minhaAvaliacao(util.getUsuarioLogado());
+                    AvaliacaoFisica minhaAvaliacao = avaliacaofisicadao.buscaUltimaAvaliacao(util.getUsuarioLogado());
                     if (minhaAvaliacao != null){
                         System.out.println("\n" + minhaAvaliacao);
                     }
@@ -379,7 +385,7 @@ public class LoginController {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
         new LoginController();
     }

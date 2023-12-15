@@ -4,21 +4,105 @@
  */
 package model.DAO;
 
+import model.ConnectionFactory;
 import model.Alimento;
 import model.AvaliacaoFisica;
 import model.Pessoa;
+
+import java.sql.*;
+import java.time.LocalDate;
 
 /**
  *
  * @author iagol
  */
-public class AvaliacaoFisicaDAO {
-    AvaliacaoFisica[] avaliacoes = new AvaliacaoFisica[10];
 
+public class AvaliacaoFisicaDAO {
+
+    public AvaliacaoFisicaDAO(PessoaDAO pessoadao) {
+    }
+
+    public long adicionaAvaliacao(AvaliacaoFisica af) {
+        String sql = "insert into avaliacao_fisica(peso, altura, idade, pescoco, cintura, tx_atividade, quadril, tmb, imc,  bf, createDate, modifyDate, pessoa_idpessoa) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        try (Connection connection = new ConnectionFactory().getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, String.valueOf(af.getPeso()));
+            stmt.setString(2, String.valueOf(af.getAltura()));
+            stmt.setString(3, String.valueOf(af.getIdade()));
+            stmt.setString(4, String.valueOf(af.getPescoco()));
+            stmt.setString(5, String.valueOf(af.getCintura()));
+            stmt.setString(6, String.valueOf(af.getTxAtividade()));
+            stmt.setString(7, String.valueOf(af.getQuadril()));
+            stmt.setString(8, String.valueOf(af.getTmb()));
+            stmt.setString(9, String.valueOf(af.getImc()));
+            stmt.setString(10, String.valueOf(af.getBf()));
+            stmt.setString(11, String.valueOf(af.getDtCriacao()));
+            stmt.setString(12, String.valueOf(af.getDtModificacao()));
+            stmt.setString(13, String.valueOf(af.getPessoa().getId()));
+            stmt.execute();
+
+            //retorna o id do objeto inserido
+            ResultSet rs=stmt.getGeneratedKeys();
+            int retorno=0;
+            if(rs.next()){
+                retorno = rs.getInt(1);
+            }
+            System.out.println("O id inserido foi: " + retorno);
+            System.out.println("Gravado!");
+            return retorno;
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível inserir a avaliação física!" + e);
+        }
+    }
+
+    private PreparedStatement createPreparedStatementLast(Connection con, long id) throws SQLException {
+        String sql = "select * from avaliacaofisica where id = ? order by id desc limit 1";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setLong(1, id);
+        return ps;
+    }
+
+    public AvaliacaoFisica buscaUltimaAvaliacao(long idUsuario) {
+        try (Connection connection = new ConnectionFactory().getConnection();
+             PreparedStatement ps = createPreparedStatementLast(connection, idUsuario);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                AvaliacaoFisica avaliacaoFisica = new AvaliacaoFisica();
+                avaliacaoFisica.setId((int) rs.getLong("id_avaliacao"));
+                long pessoaId = Long.parseLong(rs.getString("pessoa_idpessoa"));
+                avaliacaoFisica.setPessoa(PessoaDAO.buscaPorID(pessoaId));
+                avaliacaoFisica.setTxAtividade(Double.parseDouble(rs.getString("tx_atividade")));
+                avaliacaoFisica.setPeso(Double.parseDouble(rs.getString("peso")));
+                avaliacaoFisica.setAltura(Double.parseDouble(rs.getString("altura")));
+                avaliacaoFisica.setIdade(Integer.parseInt(rs.getString("idade")));
+                avaliacaoFisica.setPescoco(Integer.parseInt(rs.getString("pescoco")));
+                avaliacaoFisica.setCintura(Integer.parseInt(rs.getString("cintura")));
+                avaliacaoFisica.setQuadril(Integer.parseInt(rs.getString("quadril")));
+                avaliacaoFisica.setImc(Double.parseDouble(rs.getString("imc")));
+                avaliacaoFisica.setTmb(Double.parseDouble(rs.getString("tmb")));
+                avaliacaoFisica.setBf(Double.parseDouble(rs.getString("bof")));
+
+                java.sql.Date currentDate = rs.getDate("dataCriacao");
+                LocalDate dataCriacao = currentDate.toLocalDate();
+                avaliacaoFisica.setDtCriacao(dataCriacao);
+
+                java.sql.Date currentDateMod = rs.getDate("dataModificacao");
+                LocalDate dataMod = currentDateMod.toLocalDate();
+                avaliacaoFisica.setDtModificacao(dataMod);
+
+                return avaliacaoFisica;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível buscar a última avaliação física!" + e);
+        }
+        return null;
+    }
+
+    /*AvaliacaoFisica[] avaliacoes = new AvaliacaoFisica[10];
 
     public AvaliacaoFisicaDAO(PessoaDAO pessoadao){
     AvaliacaoFisica af1 = new AvaliacaoFisica();
-    af1.setPessoa(pessoadao.buscaPorNome("iago"));
+    af1.setPessoa(pessoadao.buscaPorID(1));
     af1.setPeso(73);
     af1.setAltura(172);
     af1.setIdade(22);
@@ -81,61 +165,6 @@ public class AvaliacaoFisicaDAO {
             }
         }
         return null;
-    }
-
-
-
-/*
-public double calculaIMC(double peso, double altura){
-        double imc  = peso/(altura * altura);
-        return imc;
-    }
-
-    public double tmbHomem(double peso, double altura, int idade)
-    {
-        //Calculo da taxa metabolica basal com base na formula de Harris-Benedict(para adultos)
-        double vlTmb = 66 + (13.7 * peso) + (5 * altura) - (6.8 * idade);
-        return vlTmb;
-    }
-
-    public double tmbMulher(double peso, double altura, int idade)
-    {
-        //Calculo da taxa metabolica basal com base na formula de Harris-Benedict(para adultos)
-        double vlTmb = 655 + (9.6 * peso) + (1.8 * altura) - (4.7 * idade);
-        return vlTmb;
-    }
-
-    public double gastoCalDiario(double tmb, double fatorAtividade){
-        double gasto = tmb * fatorAtividade;
-        return gasto;
-    }
-    public double imc(double peso, double altura){
-        double vlImc = peso / ((altura/100) * (altura/100));
-        return vlImc;
-    }
-
-    public double bfHomem(double cintura, double pescoco, double altura) {
-        //495 / (1.0324 - 0.19077 * Math.log10(cintura - pescoco) + 0.15456 * Math.log10(altura)) - 450;
-        double vlBfH = 495 / (1.0324 - 0.19077 * Math.log10(cintura - pescoco) + 0.15456 * Math.log10(altura)) - 450;
-        return vlBfH;
-    }
-
-    public double bfMulher(double cintura,  double quadril, double pescoco, double altura, double peso) {
-        //163.205 - (97.684 * Math.log10(cintura + quadril - pescoco)) - (78.387 * Math.log10(altura)) + (4.369 * Math.log10(peso));
-        double vlBfM = 163.205 / (97.684 * Math.log10(cintura + quadril - pescoco)) - (78.378 * Math.log10(altura)) + (4.369 * Math.log10(peso));
-        return vlBfM;
-    }
-
-    public double massaGorda(double peso, double bf){
-        double mGorda = peso * bf / 100;
-        return mGorda;
-    }
-
-    public double massaMagra(double peso, double massaGorda){
-        double mMagra = peso - massaGorda;
-        return mMagra;
-    }
-*/
-
+    }*/
 
 }
